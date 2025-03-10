@@ -2,7 +2,7 @@
 require "../helper.php";
 
 
-require basePath('views/homepage.view.php');
+loadView('homepage');
 
 ?>
 
