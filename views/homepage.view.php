@@ -1,7 +1,7 @@
-<?php require basePath("views/partials/head.php"); ?>
-<?php require basePath("views/partials/navbar.php"); ?>
-<?php require basePath("views/partials/showcase-search.php"); ?>
-<?php require basePath("views/partials/top-banner.php"); ?>
+<?php loadPartials("head"); ?>
+<?php loadPartials("navbar"); ?>
+<?php loadPartials("showcase-search"); ?>
+<?php loadPartials("top-banner"); ?>
 
 
 
@@ -180,5 +180,5 @@
 </section>
 
 
-<?php require basePath("views/partials/bottom-banner.php"); ?>
-<?php require basePath("views/partials/footer.php"); ?>
+<?php loadPartials("bottom-banner"); ?>
+<?php loadPartials("footer"); ?>

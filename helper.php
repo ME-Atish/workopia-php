@@ -27,3 +27,18 @@ function loadView ($name){
     require basePath("views/{$name}.view.php");
 
 }
+
+
+/**
+ * Load a partials
+ * 
+ * @param string $name
+ * @return void
+ * 
+ */
+
+ function loadPartials ($name){
+
+    require basePath("views/partials/{$name}.php");
+
+}
