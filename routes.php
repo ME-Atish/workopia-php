@@ -1,8 +1,5 @@
 <?php
 
-return  [
-    "/" => "controller/home.php",
-    "/listing" => "controller/listing/index.php",
-    "/listing/create" => "controller/listing/create.php",
-    "404" => "controller/errors/404.php"
-];
+$router->get('/', 'controller/home.php');
+$router->get('/listing', 'controller/listing/index.php');
+$router->get('/listing/create', 'controller/listing/create.php');
