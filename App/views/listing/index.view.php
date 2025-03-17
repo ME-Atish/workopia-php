@@ -1,9 +1,5 @@
 <?php loadPartials("head"); ?>
 <?php loadPartials("navbar"); ?>
-<?php loadPartials("showcase-search"); ?>
-<?php loadPartials("top-banner"); ?>
-
-
 
 
 <!-- Job Listings -->
@@ -39,10 +35,6 @@
         </div>
     <?php endforeach ?>
     </div>
-    <a href="/listing" class="block text-xl text-center">
-        <i class="fa fa-arrow-alt-circle-right"></i>
-        Show All Jobs
-    </a>
 </section>
 
 

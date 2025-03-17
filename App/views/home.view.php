@@ -3,9 +3,6 @@
 <?php loadPartials("showcase-search"); ?>
 <?php loadPartials("top-banner"); ?>
 
-
-
-
 <!-- Job Listings -->
 <section>
     <div class="container mx-auto p-4 mt-4">
@@ -39,7 +36,7 @@
         </div>
     <?php endforeach ?>
     </div>
-    <a href="/listing?id=<?= $listing->id ?>" class="block text-xl text-center">
+    <a href="/listing" class="block text-xl text-center">
         <i class="fa fa-arrow-alt-circle-right"></i>
         Show All Jobs
     </a>

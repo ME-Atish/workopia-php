@@ -3,6 +3,8 @@
 
 namespace Framework;
 
+use App\Controllers\ErrorController;
+
 class Router
 {
     protected $routes = [];
@@ -83,30 +85,33 @@ class Router
      * @return void
      */
 
-    /**
-     * @param int $httpCode
-     * 
-     * @return void
-     */
-    public function error($httpCode = 404)
-    {
-        http_response_code($httpCode);
-        loadView("error/{$httpCode}");
-        exit;
-    }
-
-    public function route($method, $uri)
-    {
-        foreach ($this->routes as $route) {
-            if ($route["uri"] === $uri && $route["method"] === $method) {
-
-                $controller = "App\\Controllers\\" . $route["controller"];
-                $controllerMethod = $route["controllerMethod"];
-
-                $controllerInstance = new $controller();
-                $controllerInstance->$controllerMethod();
-            }
-        }
-        $this->error();
-    }
+     public function route($method, $uri)
+     {
+         foreach ($this->routes as $route) {
+             if ($route["uri"] === $uri && $route["method"] === $method) {
+     
+                 $controller = "App\\Controllers\\" . $route["controller"];
+                 $controllerMethod = $route["controllerMethod"];
+     
+                 if (!class_exists($controller)) {
+                     ErrorController::notFound("Controller not found: $controller");
+                     return;
+                 }
+     
+                 $controllerInstance = new $controller();
+     
+                 if (!method_exists($controllerInstance, $controllerMethod)) {
+                     ErrorController::notFound("Method '$controllerMethod' not found in $controller");
+                     return;
+                 }
+     
+                 $controllerInstance->$controllerMethod();
+                 return;  // ✅ Stop execution once a valid route is found
+             }
+         }
+     
+         // No matching route found, trigger 404
+         ErrorController::notFound();
+     }
+     
 }
