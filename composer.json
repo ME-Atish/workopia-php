@@ -1,0 +1,16 @@
+{
+    "name": "me-atish/workopia-php",
+    "description": "job-listing application",
+    "authors": [
+      {
+        "name": "Mohammad Erfan Atashrou",
+        "email": "meatish2008@gmail.com"
+      }
+    ],
+    "autoload": {
+      "psr-4": {
+        "Framework\\": "Framework/",
+        "App\\": "App/"
+      }
+    }
+  }
