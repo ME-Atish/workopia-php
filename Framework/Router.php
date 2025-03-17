@@ -2,16 +2,19 @@
 
 
 namespace Framework;
+
 class Router
 {
     protected $routes = [];
 
-    public function registerRoute($method, $uri, $controller)
+    public function registerRoute($method, $uri, $action)
     {
+        list($controller, $controllerMethod) = explode("@", $action);
         $this->routes[] = [
             'method' => $method,
             'uri' => $uri,
-            'controller' => $controller
+            'controller' => $controller,
+            'controllerMethod' => $controllerMethod
         ];
     }
 
@@ -85,7 +88,8 @@ class Router
      * 
      * @return void
      */
-    public function error ($httpCode = 404){
+    public function error($httpCode = 404)
+    {
         http_response_code($httpCode);
         loadView("error/{$httpCode}");
         exit;
@@ -95,8 +99,12 @@ class Router
     {
         foreach ($this->routes as $route) {
             if ($route["uri"] === $uri && $route["method"] === $method) {
-                require basePath("App/{$route['controller']}");
-                return;
+
+                $controller = "App\\Controllers\\" . $route["controller"];
+                $controllerMethod = $route["controllerMethod"];
+
+                $controllerInstance = new $controller();
+                $controllerInstance->$controllerMethod();
             }
         }
         $this->error();
