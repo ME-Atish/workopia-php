@@ -1,3 +1,10 @@
 <?php
+$config = require basePath("config/db.php");
 
-loadView("/listing/index");
+$db = new Database($config);
+
+$listings = $db->query("SELECT * FROM listing")->fetchAll();
+
+loadView("listing/index", [
+    'listings' => $listings
+]);
