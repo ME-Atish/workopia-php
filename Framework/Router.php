@@ -106,7 +106,7 @@ class Router
                  }
      
                  $controllerInstance->$controllerMethod();
-                 return;  // ✅ Stop execution once a valid route is found
+                 return;
              }
          }
      
