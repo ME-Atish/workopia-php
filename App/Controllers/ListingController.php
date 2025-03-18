@@ -76,7 +76,8 @@ class ListingController
             'description',
             'email',
             'city',
-            'state'
+            'state',
+            'salary'
         ];
         $errors = [];
         foreach ($requiredFields as $field) {
