@@ -85,33 +85,61 @@ class Router
      * @return void
      */
 
-     public function route($method, $uri)
-     {
-         foreach ($this->routes as $route) {
-             if ($route["uri"] === $uri && $route["method"] === $method) {
-     
-                 $controller = "App\\Controllers\\" . $route["controller"];
-                 $controllerMethod = $route["controllerMethod"];
-     
-                 if (!class_exists($controller)) {
-                     ErrorController::notFound("Controller not found: $controller");
-                     return;
-                 }
-     
-                 $controllerInstance = new $controller();
-     
-                 if (!method_exists($controllerInstance, $controllerMethod)) {
-                     ErrorController::notFound("Method '$controllerMethod' not found in $controller");
-                     return;
-                 }
-     
-                 $controllerInstance->$controllerMethod();
-                 return;
-             }
-         }
-     
-         // No matching route found, trigger 404
-         ErrorController::notFound();
-     }
-     
+    public function route($uri)
+    {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+        foreach ($this->routes as $route) {
+
+            // Split the current URI into segments
+            $uriSegment = explode("/", trim($uri, "/"));
+            // Split the route URI into segments
+            $routeSegment = explode("/", trim($route['uri'], "/"));
+
+            $match = true;
+
+            // Check if number of segment match
+            if (count($uriSegment) === count($routeSegment) && strtoupper($route['method']) === $requestMethod) {
+                $params = [];
+
+                $match = true;
+
+                for ($i = 0; $i < count($uriSegment); $i++) {
+                    // If the uri's do not match and there is no params
+                    if ($routeSegment[$i] !== $uriSegment[$i] && !preg_match('/\{(.+?)\}/',  $routeSegment[$i])) {
+                        $match = false;
+                        break;
+                    }
+
+                    // Check for the param and add to $params array
+                    if (preg_match('/\{(.+?)\}/',  $routeSegment[$i], $matches)) {
+
+                        $params[$matches[1]] = $uriSegment[$i];
+                    }
+                }
+                if ($match) {
+                    $controller = "App\\Controllers\\" . $route["controller"];
+                    $controllerMethod = $route["controllerMethod"];
+
+                    if (!class_exists($controller)) {
+                        ErrorController::notFound("Controller not found: $controller");
+                        return;
+                    }
+
+                    $controllerInstance = new $controller();
+
+                    if (!method_exists($controllerInstance, $controllerMethod)) {
+                        ErrorController::notFound("Method '$controllerMethod' not found in $controller");
+                        return;
+                    }
+
+                    $controllerInstance->$controllerMethod($params);
+                    return;
+                }
+            }
+        }
+
+        // No matching route found, trigger 404
+        ErrorController::notFound();
+    }
 }
