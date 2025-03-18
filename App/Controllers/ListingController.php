@@ -28,7 +28,7 @@ class ListingController
     {
         loadView("/listing/create");
     }
-    
+
     public function show($params)
     {
         $id = $params["id"] ?? "";
@@ -40,12 +40,34 @@ class ListingController
 
         $listing = $this->db->query("SELECT * FROM listing where id = :id", $params)->fetch();
 
-        
-        if(!$listing){
+
+        if (!$listing) {
             ErrorController::notFound("Listing not found");
         }
         loadView('listing/show', [
             'listing' => $listing
         ]);
+    }
+
+    public function store()
+    {
+        $allowedFields = [
+            'title',
+            'description',
+            'salary',
+            'tags',
+            'company',
+            'address',
+            'city',
+            'state',
+            'phone',
+            'email',
+            'requirement',
+            'benefits'
+        ];
+        $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
+
+        $newListingData['user_id'] = 1;
+        $newListingData = array_map('sanitize', $newListingData);
     }
 }
