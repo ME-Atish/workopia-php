@@ -112,7 +112,7 @@ class ListingController
 
             $query = "INSERT INTO listing ({$fields}) VALUES ({$values})";
             $this->db->query($query, $newListingData);
-
+            redirect('/listing');
         }
     }
 }
